@@ -8,7 +8,6 @@
     - id: go-cyclo
       args: [-over=15]
     - id: no-go-testing
-    - id: gometalinter
     - id: go-critic
     - id: go-unit-tests
     - id: go-mod-tidy
