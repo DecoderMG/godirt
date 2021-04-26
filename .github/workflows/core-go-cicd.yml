@@ -2,42 +2,36 @@ name: Go
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
-jobs:
-
-  check-quality:
-    runs-on: ubuntu-latest
-    name: A job to check code quality
-    steps:
-    - name: Check code meets quality standards
-      id: code-inspector
-      uses: codeinspectorio/github-action@master
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
-        code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
-        min_quality_grade: 'GOOD'
-        min_quality_score: '70'
-        max_defects_rate: '0.0001'
-        max_complex_functions_rate: '0.0001'
-        max_long_functions_rate: '0.0001'
-        project_name: 'golang-directory-size'
-        max_timeout_sec: '600'
+jobs: 
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Check code meets quality standards
+        id: code-inspector
+        uses: codeinspectorio/github-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
+          code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
+          min_quality_grade: 'GOOD'
+          min_quality_score: '70'
+          max_defects_rate: '0.0001'
+          max_complex_functions_rate: '0.0001'
+          max_long_functions_rate: '0.0001'
+          project_name: 'golang-directory-size'
+          max_timeout_sec: '600'
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15
+      - name: Build
+        run: go build -v ./...
 
-    - name: Build
-      run: go build -v ./...
-
-    - name: Test
-      run: go test -v ./...
+      - name: Test
+        run: go test -v ./...
