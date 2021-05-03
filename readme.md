@@ -1,5 +1,7 @@
 # GoDIRT
 
+![Code Quality](https://www.code-inspector.com/project/21923/score/svg)
+![Code Grade](https://www.code-inspector.com/project/21923/status/svg)
 ## Table of Contents
 + [About](#about)
 + [Getting Started](#getting_started)
